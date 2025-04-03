@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shirts', function (Blueprint $table) {
-            $table->id('id_shi');
+        $table->id('id_shi');
         $table->string('nom_shi', 255);
         $table->string('taille_shi', 255);
         $table->decimal('prix_shi', 8, 2); // Correction : Utiliser DECIMAL pour le prix

@@ -20,8 +20,8 @@ return new class extends Migration
     
             $table->primary(['shirts_id_shi', 'orders_id_ord']);
     
-            $table->foreign('shirts_id_shi')->references('id_shi')->on('shirts')->onDelete('cascade');
-            $table->foreign('orders_id_ord')->references('id_ord')->on('orders')->onDelete('cascade');
+            $table->foreign('shirts_id_shi')->references('id_shi');
+            $table->foreign('orders_id_ord')->references('id_ord');
         });
     }
 
