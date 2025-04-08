@@ -30,4 +30,5 @@ class Shirt extends Model
     {
         return $this->belongsToMany(Order::class, 'order_shirts', 'shirts_id_shi', 'orders_id_ord');
     }
+    public $timestamps = false;
 }

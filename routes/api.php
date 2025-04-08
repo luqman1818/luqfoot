@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ShirtController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,19 @@ Route::get('orders/{id}', [OrderController::class, 'show']);
 Route::post('orders', [OrderController::class, 'store']);
 Route::put('orders/{id}', [OrderController::class, 'update']);
 Route::delete('orders/{id}', [OrderController::class, 'destroy']);
+
+
+// Afficher la liste de toutes les chemises
+Route::get('shirts', [ShirtController::class, 'index']);
+
+// Afficher une chemise spécifique
+Route::get('shirts/{id}', [ShirtController::class, 'show']);
+
+// Créer une nouvelle chemise
+Route::post('shirts', [ShirtController::class, 'store']);
+
+// Modifier une chemise existante
+Route::put('shirts/{id}', [ShirtController::class, 'update']);
+
+// Supprimer une chemise
+Route::delete('shirts/{id}', [ShirtController::class, 'destroy']);
