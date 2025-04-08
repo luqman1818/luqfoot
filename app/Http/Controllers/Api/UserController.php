@@ -1,81 +1,64 @@
 <?php
 
-namespace App\Http\Controllers;
-use App\Models\User;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    // Afficher la liste des utilisateurs
+    // Lister tous les utilisateurs
     public function index()
     {
-        $users = User::all();  // Récupère tous les utilisateurs
-        return view('users.index', compact('users'));
+        return response()->json(User::all());
     }
 
     // Afficher un utilisateur spécifique
     public function show($id)
     {
-        $user = User::findOrFail($id);  // Trouve l'utilisateur par ID
-        return view('users.show', compact('user'));
+        $user = User::findOrFail($id);
+        return response()->json($user);
     }
 
     // Créer un nouvel utilisateur
-    public function create()
-    {
-        return view('users.create');  // Affiche un formulaire pour créer un utilisateur
-    }
-
-    // Enregistrer un nouvel utilisateur
     public function store(Request $request)
     {
-        // Validation des données
-        $request->validate([
+        $validated = $request->validate([
             'prenom_use' => 'required|string|max:255',
             'nom_use' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
         ]);
 
-        // Création de l'utilisateur
-        $user = User::create([
-            'prenom_use' => $request->prenom_use,
-            'nom_use' => $request->nom_use,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),  // Assurer le chiffrement du mot de passe
-        ]);
+        $validated['password'] = bcrypt($validated['password']);
 
-        return redirect()->route('users.index');  // Redirige vers la liste des utilisateurs
+        $user = User::create($validated);
+
+        return response()->json($user, 201);
     }
 
-    // Afficher le formulaire d'édition pour un utilisateur
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-        return view('users.edit', compact('user'));
-    }
-
-    // Mettre à jour un utilisateur existant
+    // Mettre à jour un utilisateur
     public function update(Request $request, $id)
     {
-        // Validation des données
-        $request->validate([
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
             'prenom_use' => 'required|string|max:255',
             'nom_use' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:6|confirmed',
+            'password' => 'nullable|string|min:6',
         ]);
 
-        $user = User::findOrFail($id);
-        $user->update([
-            'prenom_use' => $request->prenom_use,
-            'nom_use' => $request->nom_use,
-            'email' => $request->email,
-            'password' => $request->password ? bcrypt($request->password) : $user->password,
-        ]);
+        if ($request->filled('password')) {
+            $validated['password'] = bcrypt($validated['password']);
+        } else {
+            $validated['password'] = $user->password;
+        }
 
-        return redirect()->route('users.index');
+        $user->update($validated);
+
+        return response()->json($user);
     }
 
     // Supprimer un utilisateur
@@ -83,6 +66,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('users.index');
+
+        return response()->json(['message' => 'Utilisateur supprimé']);
     }
 }
