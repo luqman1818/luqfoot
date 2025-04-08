@@ -28,4 +28,5 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'users_id_use', 'id_use');
     }
+    public $timestamps = false;
 }
