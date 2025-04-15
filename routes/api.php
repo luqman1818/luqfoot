@@ -18,6 +18,9 @@ use App\Http\Controllers\Api\ShirtController;
 |
 */
 
+
+//Route::middleware('auth:sanctum')->group(function () {
+
 Route::get('users', [UserController::class, 'index']);
 Route::get('users/{id}', [UserController::class, 'show']);
 Route::post('users', [UserController::class, 'store']);
@@ -54,3 +57,4 @@ Route::put('shirts/{id}', [ShirtController::class, 'update']);
 
 // Supprimer une chemise
 Route::delete('shirts/{id}', [ShirtController::class, 'destroy']);
+//});

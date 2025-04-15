@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -27,11 +28,15 @@ class UserController extends Controller
         $validated = $request->validate([
             'prenom_use' => 'required|string|max:255',
             'nom_use' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'adresse_use' => 'required|string|max:255', // Validation pour l'adresse
+            'email_use' => 'required|email|unique:users,email_use',
+            'date_naissance_use' => 'required|date', // Validation pour la date de naissance
+            'mdp_use' => 'required|string|min:6',
+            'roles_id_rol' => 'required|exists:roles,id_rol',
         ]);
+        $validated['date_naissance_use'] = Carbon::createFromFormat('d-m-Y', $validated['date_naissance_use'])->format('Y-m-d');
 
-        $validated['password'] = bcrypt($validated['password']);
+        $validated['mdp_use'] = bcrypt($validated['mdp_use']);
 
         $user = User::create($validated);
 
@@ -46,15 +51,27 @@ class UserController extends Controller
         $validated = $request->validate([
             'prenom_use' => 'required|string|max:255',
             'nom_use' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:6',
+            'adresse_use' => 'required|string|max:255', // Validation pour l'adresse
+            'email_use' => 'required|email|unique:users,email_use' . $user->id,
+            'date_naissance_use' => 'required|date', // Validation pour la date de naissance
+            'mdp_use' => 'required|string|min:6',
+            'roles_id_rol' => 'required|exists:roles,id_rol',
         ]);
 
-        if ($request->filled('password')) {
-            $validated['password'] = bcrypt($validated['password']);
+        if ($request->filled('mdp_use')) {
+            $validated['mdp_use'] = bcrypt($validated['mdp_use']);
         } else {
-            $validated['password'] = $user->password;
+            $validated['mdp_use'] = $user->password;
         }
+        // Formater la date de naissance
+        if ($request->has('date_naissance_use')) {
+            $validated['date_naissance_use'] = Carbon::createFromFormat('d-m-Y', $request->input('date_naissance_use'))->format('Y-m-d');
+        }
+
+        // Trouver l'utilisateur par ID
+        $user = User::find($id);
+
+       
 
         $user->update($validated);
 

@@ -11,6 +11,5 @@ class OrderSeeder extends Seeder
     public function run()
     {
         // Générer 20 commandes associées à des utilisateurs aléatoires
-        Order::factory(20)->create();
     }
 }

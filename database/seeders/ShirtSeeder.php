@@ -15,6 +15,5 @@ class ShirtSeeder extends Seeder
     public function run()
     {
         // Générer 50 chemises fictives
-        Shirt::factory(50)->create();
     }
 }

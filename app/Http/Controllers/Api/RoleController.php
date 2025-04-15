@@ -29,11 +29,11 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nom_rol' => 'required|string|max:255',
+            'nom_role_rol' => 'required|string|max:255',
         ]);
 
         $role = Role::create([
-            'nom_rol' => $request->nom_rol,
+            'nom_role_rol' => $request->nom_role_rol,
         ]);
 
         return response()->json($role, 201);
@@ -48,11 +48,11 @@ class RoleController extends Controller
         }
 
         $request->validate([
-            'nom_rol' => 'required|string|max:255',
+            'nom_role_rol' => 'required|string|max:255',
         ]);
 
         $role->update([
-            'nom_rol' => $request->nom_rol,
+            'nom_role_rol' => $request->nom_role_rol,
         ]);
 
         return response()->json($role);
