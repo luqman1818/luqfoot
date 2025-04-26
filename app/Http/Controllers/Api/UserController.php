@@ -25,6 +25,8 @@ class UserController extends Controller
     // Créer un nouvel utilisateur
     public function store(Request $request)
     {
+
+    
         $validated = $request->validate([
             'prenom_use' => 'required|string|max:255',
             'nom_use' => 'required|string|max:255',
@@ -32,7 +34,7 @@ class UserController extends Controller
             'email_use' => 'required|email|unique:users,email_use',
             'date_naissance_use' => 'required|date', // Validation pour la date de naissance
             'mdp_use' => 'required|string|min:6',
-            'roles_id_rol' => 'required|exists:roles,id_rol',
+            //'roles_id_rol' => 'required|exists:roles,id_rol',
         ]);
         $validated['date_naissance_use'] = Carbon::createFromFormat('d-m-Y', $validated['date_naissance_use'])->format('Y-m-d');
 
@@ -55,7 +57,7 @@ class UserController extends Controller
             'email_use' => 'required|email|unique:users,email_use' . $user->id,
             'date_naissance_use' => 'required|date', // Validation pour la date de naissance
             'mdp_use' => 'required|string|min:6',
-            'roles_id_rol' => 'required|exists:roles,id_rol',
+            //'roles_id_rol' => 'required|exists:roles,id_rol',
         ]);
 
         if ($request->filled('mdp_use')) {

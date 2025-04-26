@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ShirtController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,12 @@ use App\Http\Controllers\Api\ShirtController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/register', [AuthController::class, 'register']);
+
 
 
 //Route::middleware('auth:sanctum')->group(function () {
@@ -50,11 +57,16 @@ Route::get('shirts', [ShirtController::class, 'index']);
 Route::get('shirts/{id}', [ShirtController::class, 'show']);
 
 // Créer une nouvelle chemise
-Route::post('shirts', [ShirtController::class, 'store']);
+//Route::post('shirts', [ShirtController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'can:create shirt'])->group(function () {
+    Route::post('shirts', [ShirtController::class, 'store']);
+});
 
 // Modifier une chemise existante
 Route::put('shirts/{id}', [ShirtController::class, 'update']);
 
 // Supprimer une chemise
 Route::delete('shirts/{id}', [ShirtController::class, 'destroy']);
+
 //});
