@@ -75,6 +75,6 @@ class ShirtController extends Controller
         $shirt = Shirt::findOrFail($id);
         $shirt->delete();
 
-        return response()->json(['message' => 'Chemise supprimée']);
+        return response()->json(['message' => 'Maillot supprimée']);
     }
 }

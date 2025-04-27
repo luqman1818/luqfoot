@@ -15,6 +15,6 @@ class RoleSeeder extends Seeder
     public function run()
     {
         // Créer 5 rôles aléatoires
-        \App\Models\Role::factory(5)->create();
+        //\App\Models\Role::factory(5)->create();
     }
 }

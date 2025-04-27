@@ -34,7 +34,7 @@ class UserController extends Controller
             'email_use' => 'required|email|unique:users,email_use',
             'date_naissance_use' => 'required|date', // Validation pour la date de naissance
             'mdp_use' => 'required|string|min:6',
-            //'roles_id_rol' => 'required|exists:roles,id_rol',
+        
         ]);
         $validated['date_naissance_use'] = Carbon::createFromFormat('d-m-Y', $validated['date_naissance_use'])->format('Y-m-d');
 

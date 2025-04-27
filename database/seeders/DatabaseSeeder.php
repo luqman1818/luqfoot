@@ -21,12 +21,14 @@ class DatabaseSeeder extends Seeder
         /** ---- SPATIE ROLES & PERMISSIONS ---- **/
         
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        //$userUser = Role::firstOrCreate(['name' => 'user']);
 
-        // Créer une permission
         $createShirt = Permission::firstOrCreate(['name' => 'create shirt']);
+        $updateShirt = Permission::firstOrCreate(['name' => 'update shirt']);
+        $deleteShirt = Permission::firstOrCreate(['name' => 'delete shirt']);
 
-        // Attribuer la permission au rôle
-        $adminRole->givePermissionTo($createShirt);
+        // Attribuer les permissions au rôle admin
+        $adminRole->givePermissionTo([$createShirt, $updateShirt, $deleteShirt]);
 
         // Créer un utilisateur avec un rôle
         $admin = User::create([
@@ -40,7 +42,10 @@ class DatabaseSeeder extends Seeder
 
         $admin->assignRole($adminRole);
 
-
+         // Création de 9 utilisateurs avec le rôle client (user)
+        //  User::factory(9)->create()->each(function ($user) use ($userUser) {
+        //      $user->assignRole($userUser); // Assigner le rôle client (user) à chaque utilisateur
+        //  });
 
         // Créer des commandes
         $orders = Order::factory()->count(5)->create();

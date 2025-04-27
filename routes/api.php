@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ShirtController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\OrderShirtController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,11 +63,23 @@ Route::get('shirts/{id}', [ShirtController::class, 'show']);
 Route::middleware(['auth:sanctum', 'can:create shirt'])->group(function () {
     Route::post('shirts', [ShirtController::class, 'store']);
 });
-
-// Modifier une chemise existante
-Route::put('shirts/{id}', [ShirtController::class, 'update']);
+// Modifier une chemise
+Route::middleware(['auth:sanctum', 'can:update shirt'])->put('shirts/{id}', [ShirtController::class, 'update']);
 
 // Supprimer une chemise
-Route::delete('shirts/{id}', [ShirtController::class, 'destroy']);
+Route::middleware(['auth:sanctum', 'can:delete shirt'])->delete('shirts/{id}', [ShirtController::class, 'destroy']);
 
 //});
+
+// Récupérer toutes les commandes de chemises
+Route::get('orderShirts', [OrderShirtController::class, 'index']);
+
+// Créer une nouvelle commande de chemises
+Route::post('orderShirts', [OrderShirtController::class, 'store']);
+
+// Mettre à jour une commande de chemise spécifique
+Route::put('orderShirts/{shirtId}/{orderId}', [OrderShirtController::class, 'update']);
+
+// Supprimer une commande de chemise spécifique
+Route::delete('orderShirts/{id}', [OrderShirtController::class, 'destroy']);
+
